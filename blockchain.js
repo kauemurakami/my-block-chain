@@ -24,13 +24,29 @@ class Blockchain{
             block.lastHash !== lastBlock.hash ||
             block.hash !== Block.blockHash(block)
           ) {
-            console.log('igual ao block anterior ')
+            console.log('equals a previous block')
             return false
           }
         }
-        console.log('block valido')
+        console.log('block valid')
         return true
       }
+
+    replaceChain(newChain){
+        if(newChain.length <= this.chain.length ){
+            console.log('receive chain is not longer than the current chain')
+            return false
+        }else if(this.isValidChain(newChain)){
+            console.log('The received chain is not valid')
+            return false
+        }
+        console.log('replace blockchain with the new chain')
+        this.chain = newChain
+        return true
+    }
+
+
+
 
 
 }
