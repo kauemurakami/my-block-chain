@@ -40,9 +40,9 @@ class Block{
 
     //sha 256
     static hash(timestamp, lastHash, data){
-        return SHA256(`${timestamp}${lastHash}${data}`).toString();
+        return SHA256(`${timestamp}${lastHash}${data}`).toString()
     }
     
 }
 
-module.exports = Block;
+module.exports = Block
