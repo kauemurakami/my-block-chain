@@ -3,8 +3,10 @@ const Block = require('./block')
 describe('Blockchain', ()=>{
    
     let bc;
+    let bc2;
     beforeEach(()=> {
-        bc = new Blockchain // uma instancia para cada teste
+        bc = new Blockchain // uma instance para cada teste
+        bc2 = new Blockchain // uma instance para cada teste
     })
 
     it('starts with genesis block',() => {
@@ -12,9 +14,25 @@ describe('Blockchain', ()=>{
     })
 
     it('adds a new block',() => {
-        const data = 'arquivo.pdf'
+        const data = 'file.pdf'
         bc.addBlock(data)
 
         expect(bc.chain[bc.chain.length - 1].data).toEqual(data)
     })
+
+    it('validate as valid chain', ()=> {
+        bc2.addBlock('foo');
+        expect(bc.isValidChain(bc2.chain)).toBe(true)
+    })
+
+    it('invalidates a chain with a corrupt genesis block', () => {
+        bc2.chain[0].data = 'Bad data';
+      expect(bc.isValidChain(bc2.chain)).toBe(false);
+    });
+    
+    it('invalidates a corrupt chain', () => {
+      bc2.addBlock('foo');
+      bc2.chain[1].data = 'Not foo';
+      expect(bc.isValidChain(bc2.chain)).toBe(false);
+    });
 })
