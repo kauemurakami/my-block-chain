@@ -1,5 +1,6 @@
 const Block = require('./block')
 
+//BLOCKCHAIN CLASS
 class Blockchain{
     constructor(){
         this.chain = [Block.genesis()]
