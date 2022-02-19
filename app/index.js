@@ -7,6 +7,10 @@ const HTTP_PORT = process.env.HTTP_PORT || 3001
 
 const app = express()
 
-const bc = new Blockchain()
+const blockchain = new Blockchain()
 
+app.get('/blocks', (req, res)=> {
+    res.json(blockchain.chain)
+},)
 
+app.listen(HTTP_PORT, ()=> console.log(`api started on port ${HTTP_PORT}`))

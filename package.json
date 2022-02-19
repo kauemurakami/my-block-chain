@@ -7,6 +7,8 @@
     "jest": "^27.5.1"
   },
   "scripts": {
-    "test": "jest --watchALL"
+    "test": "jest --watchALL",
+    "start": "node ./app",
+    "dev": "node ./app "
   }
 }
