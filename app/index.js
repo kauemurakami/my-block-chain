@@ -9,8 +9,17 @@ const app = express()
 
 const blockchain = new Blockchain()
 
+app.use(express.json())
+
+app.post('/mine', (req, res)=>{
+    const block = blockchain.addBlock(req.body.data)
+    console.log(`new block add: ${block.toString()}`)
+    res.redirect('/blocks')
+})
+
 app.get('/blocks', (req, res)=> {
     res.json(blockchain.chain)
 },)
 
 app.listen(HTTP_PORT, ()=> console.log(`api started on port ${HTTP_PORT}`))
+

@@ -24,9 +24,9 @@ class Block{
     //primeiro bloco
     static genesis(){
         return new this(
-            `Genesis time',
+            'Genesis time',
             '------------------',
-            'FHUSDIOHFSDUOFFWQFQW'`,[])
+            'FHUSDIOHFSDUOFFWQFQW',[])
     }
 
 
