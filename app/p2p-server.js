@@ -25,7 +25,7 @@ class P2PServer{
         this.socket.push(socket)
         console.log(`socket connected, list sockets: ${this.socket}`)
         this.messageHandler(socket)
-        socket.send(JSON.stringify(this.blockchain.chain))
+        this.sendChain(socket)
     }
 
     connectToPeers(){
@@ -39,9 +39,16 @@ class P2PServer{
     messageHandler(socket){
         socket.on('message', message => {
             const data = JSON.parse(message)
-            console.log('data',data)
-
+            this.blockchain.replaceChain(data)
         })
+    }
+
+    syncChain(){
+        this.socket.forEach( socket => this.sendChain(socket))
+    }
+    sendChain(socket){
+        socket.send(JSON.stringify(this.blockchain.chain))
+
     }
 }
 

@@ -33,7 +33,7 @@ class Block{
     static mineblock(lastBlock,data){
         const timestamp = Date.now()
         const lastHash = lastBlock.hash
-        const hash = 'a-fazer-hash-aqui'
+        const hash = this.hash(timestamp, lastHash, data)
 
         return new this(timestamp, lastHash,hash,data)
     }
