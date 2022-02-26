@@ -1,6 +1,8 @@
 const SHA256 = require('crypto-js/sha256')
+const crypto = require('crypto')
 let nonce = crypto.randomBytes(16).toString('base64');
-const DIFFICULTY = 4
+const {DIFFICULTY} = require('../config')
+
 class Block{
     constructor(timestamp, lastHash, hash, data){
         this.timestamp = timestamp
@@ -58,5 +60,6 @@ class Block{
 
     
 }
+
 
 module.exports = Block
