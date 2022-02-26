@@ -1,15 +1,16 @@
 const SHA256 = require('crypto-js/sha256')
 const crypto = require('crypto')
 let nonce = crypto.randomBytes(16).toString('base64');
-const {DIFFICULTY} = require('../config')
+const {DIFFICULTY, MINE_RATE} = require('../config')
 
 class Block{
-    constructor(timestamp, lastHash, hash, data){
+    constructor(timestamp, lastHash, hash, data, nonce, difficulty){
         this.timestamp = timestamp
         this.hash = hash
         this.lastHash = lastHash
         this.data = data
         this.nonce = nonce
+        this.difficulty = difficulty || DIFFICULTY
     }
 
 
@@ -20,18 +21,17 @@ class Block{
             last Hash = ${this.lastHash },
             hash = ${this.hash},
             nonce = ${nonce},
+            difficulty = ${this.difficulty},
             data = ${this.data},
         `
-    // last Hash = last ${this.lastHash.substring(0, 10) },
-    // hash = ${this.hash.substring(0, 10)},
     }
  
-    //primeiro bloco
+    //primeiro bloco / bloco genesis
     static genesis(){
         return new this(
             'Genesis time',
             '------------------',
-            'FHUSDIOHFSDUOFFWQFQW',[], 0)
+            'FHUSDIOHFSDUOFFWQFQW',[], 0, DIFFICULTY)
     }
 
 
@@ -39,23 +39,31 @@ class Block{
         let nonce = 0
         let hash, timestamp
         const lastHash = lastBlock.hash
+        let {difficulty} = lastBlock
         do{
             nonce++
             const timestamp = Date.now()
-             hash =this.hash(timestamp, lastHash, data, nonce)
-        }while(hash.substring(0, DIFFICULTY) !== '0'.repeat(DIFFICULTY));
+            difficulty = Block.adjustDifficulty(lastBlock, timestamp)
+             hash = this.hash(timestamp, lastHash, data, nonce, difficulty)
+        }while(hash.substring(0, difficulty) !== '0'.repeat(difficulty));
         
-        return new this(timestamp, lastHash, hash, data, nonce)
+        return new this(timestamp, lastHash, hash, data, nonce, difficulty)
+    }
+    //ajuste dinamico de dificuldado baseado no ultimo bloco
+    static adjustDifficulty(lastblock, currentTime){
+        let {difficulty} = lastblock
+        difficulty = lastblock.timestamp + MINE_RATE > currentTime ? difficulty + 1 : difficulty - 1
+        return difficulty
     }
 
     //sha 256
-    static hash(timestamp, lastHash, data, nonce){
-        return SHA256(`${timestamp}${lastHash}${data}${nonce}`).toString()
+    static hash(timestamp, lastHash, data, nonce, difficulty){
+        return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString()
     }
 
     static blockHash(block) {
-        const { timestamp, lastHash, data, nonce } = block
-      return Block.hash(timestamp, lastHash, data, nonce)
+        const { timestamp, lastHash, data, nonce, difficulty } = block
+      return Block.hash(timestamp, lastHash, data, nonce, difficulty)
     }
 
     
