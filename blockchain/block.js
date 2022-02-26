@@ -51,7 +51,7 @@ class Block{
     }
     //ajuste dinamico de dificuldado baseado no ultimo bloco
     static adjustDifficulty(lastblock, currentTime){
-        let {difficulty} = lastblock
+        let difficulty = lastblock.difficulty || DIFFICULTY
         difficulty = lastblock.timestamp + MINE_RATE > currentTime ? difficulty + 1 : difficulty - 1
         return difficulty
     }
