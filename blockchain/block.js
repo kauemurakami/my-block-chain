@@ -1,11 +1,12 @@
 const SHA256 = require('crypto-js/sha256')
-
+let nonce = crypto.randomBytes(16).toString('base64');
 class Block{
     constructor(timestamp, lastHash, hash, data){
         this.timestamp = timestamp
         this.hash = hash
         this.lastHash = lastHash
         this.data = data
+        this.nonce = nonce
     }
 
 
@@ -15,6 +16,7 @@ class Block{
             timestamp = ${this.timestamp},
             last Hash = ${this.lastHash },
             hash = ${this.hash},
+            nonce = ${nonce},
             data = ${this.data},
         `
     // last Hash = last ${this.lastHash.substring(0, 10) },
@@ -26,26 +28,33 @@ class Block{
         return new this(
             'Genesis time',
             '------------------',
-            'FHUSDIOHFSDUOFFWQFQW',[])
+            'FHUSDIOHFSDUOFFWQFQW',[], 0)
     }
 
 
     static mineblock(lastBlock,data){
-        const timestamp = Date.now()
+        let nonce = 0
+        let hash, timestamp
         const lastHash = lastBlock.hash
-        const hash = this.hash(timestamp, lastHash, data)
+        do{
+            nonce++
+            const timestamp = Date.now()
+             hash =this.hash(timestamp, lastHash, data, nonce)
+        }while( ){
 
+        }
+        
         return new this(timestamp, lastHash,hash,data)
     }
 
     //sha 256
-    static hash(timestamp, lastHash, data){
-        return SHA256(`${timestamp}${lastHash}${data}`).toString()
+    static hash(timestamp, lastHash, data, nonce){
+        return SHA256(`${timestamp}${lastHash}${data}${nonce}`).toString()
     }
 
     static blockHash(block) {
-        const { timestamp, lastHash, data } = block
-      return Block.hash(timestamp, lastHash, data)
+        const { timestamp, lastHash, data, nonce } = block
+      return Block.hash(timestamp, lastHash, data, nonce)
     }
 
     
