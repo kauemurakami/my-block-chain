@@ -1,5 +1,6 @@
 const SHA256 = require('crypto-js/sha256')
 let nonce = crypto.randomBytes(16).toString('base64');
+const DIFFICULTY = 4
 class Block{
     constructor(timestamp, lastHash, hash, data){
         this.timestamp = timestamp
@@ -40,11 +41,9 @@ class Block{
             nonce++
             const timestamp = Date.now()
              hash =this.hash(timestamp, lastHash, data, nonce)
-        }while( ){
-
-        }
+        }while(hash.substring(0, DIFFICULTY) !== '0'.repeat(DIFFICULTY));
         
-        return new this(timestamp, lastHash,hash,data)
+        return new this(timestamp, lastHash, hash, data, nonce)
     }
 
     //sha 256
