@@ -2,6 +2,7 @@
   "dependencies": {
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.0",
+    "elliptic": "^6.5.4",
     "express": "^4.17.3",
     "ws": "^8.5.0"
   },
