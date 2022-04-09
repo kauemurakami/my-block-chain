@@ -1,7 +1,7 @@
 // metodos que vao criar hashs/chaves unicas /uuid
 //todos os dados de criptografia
 //utils
-
+const SHA256 = require('crypto-js/sha256')
 const EC = require('elliptic').ec
 
 //uuid v1 possui o timestamp no método de criação, oprtanto iremos utiliza-la
@@ -21,6 +21,10 @@ class ChainUtil {
 
     static genKeyPair(){
         return ec.genKeyPair()
+    }
+
+    static hash(data){
+        return SHA256(JSON.stringify(data)).toString()
     }
 
 }
