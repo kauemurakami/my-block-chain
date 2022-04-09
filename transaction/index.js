@@ -21,8 +21,11 @@ class Transaction{
       return
     }
 
-    
-
+    transaction.outputs.push(...[{ amount: senderWallet.balance - amount, 
+      address: senderWallet.publicKey},
+      {amount, address: recipient}
+    ])
+    return transaction
   }
 
 }
