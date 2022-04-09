@@ -15,6 +15,12 @@ class Wallet {
             balance: ${this.balance}
         `
     }
+    //criando assinaturas para cada transação
+    //dataHash será criado sobre algum dado de interesse baseado nas caracteristas da transação 
+    //(similar a do bloco)
+    sign(dataHash){
+        return this.keyPair.sign(dataHash)
+    }
 
     //criptografia eliptica
 }
