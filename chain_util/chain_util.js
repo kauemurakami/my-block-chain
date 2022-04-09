@@ -6,7 +6,7 @@ const EC = require('elliptic').ec
 
 //uuid v1 possui o timestamp no método de criação, oprtanto iremos utiliza-la
 // garantindo a unicidade do uuid
-const uuidV1 = require('uuid/v1')
+const uuidV1 = require('uuid')
 
 // algoritmo de criptografia de curva eliptica
 // modelo que o bitcoin utiliza
@@ -16,7 +16,7 @@ class ChainUtil {
 
 
     static id(){
-        return uuidV1()
+        return uuidV1.v1()
     }
 
     static genKeyPair(){

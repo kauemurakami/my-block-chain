@@ -21,10 +21,10 @@ describe('Blockchain', ()=>{
         expect(bc.chain[bc.chain.length - 1].data).toEqual(data)
     })
 
-    // it('validate as valid chain', ()=> {
-    //     bc2.addBlock('500U$D');
-    //     expect(bc.isValidChain(bc2.chain)).toBe(true)
-    // })
+    it('validate as valid chain', ()=> {
+        bc2.addBlock('500U$D');
+        expect(bc.isValidChain(bc2.chain)).toBe(true)
+    })
 
     it('invalidates a chain with a corrupt genesis block', () => {
         bc2.chain[0].data = 'Bad data';

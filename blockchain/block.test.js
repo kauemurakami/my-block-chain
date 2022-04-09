@@ -27,9 +27,9 @@ describe('Block', ()=>{
         expect(Block.adjustDifficulty(block, block.timestamp + 360000)).toEqual(block.difficulty - 1)  //timestamp + 1h para forçar o decremento da dificuldade
     })
 
-    //erro
+    // erro
     // esperar incrementar a dificuldade para uma inserção de blocos muito rapida
-    // it( 'raises the difficulty for quickly mined blocks', () => {
-    //     expect(Block.adjustDifficulty(block, block.timestamp + 1)).toEqual(block.difficulty + 1 ) //add +1 millisecond
-    // })
+    it( 'raises the difficulty for quickly mined blocks', () => {
+        expect(Block.adjustDifficulty(block, block.timestamp + 1)).toEqual(block.difficulty + 1 ) //add +1 millisecond
+    })
 })

@@ -1,10 +1,10 @@
 //transação de carteira <-> carteira
-const ChainUtil = require('../chain_util')
+const ChainUtil = require('../chain_util/chain_util')
 class Transaction{
 
   constructor(){
     this.id = ChainUtil.id()
-    this. input = null
+    this.input = null
     this.outputs = []
   }
   /*
@@ -15,7 +15,7 @@ class Transaction{
   */
   static newTransaction(senderWallet, recipient, amount){
     const transaction = new this()
-    if(senderWallet.balance < amount){
+    if(amount > senderWallet.balance){
       console.log(`
       Amount: ${amount} exceeds balance`)
       return
@@ -29,3 +29,4 @@ class Transaction{
   }
 
 }
+module.exports = Transaction
