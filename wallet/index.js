@@ -18,6 +18,6 @@ class Wallet {
     }
 
     //criptografia eliptica
-
-
 }
+
+module.exports = Wallet

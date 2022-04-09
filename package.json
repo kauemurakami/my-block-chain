@@ -4,6 +4,7 @@
     "dotenv": "^16.0.0",
     "elliptic": "^6.5.4",
     "express": "^4.17.3",
+    "uuid": "^8.3.2",
     "ws": "^8.5.0"
   },
   "devDependencies": {
