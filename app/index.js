@@ -42,7 +42,8 @@ app.post('/transaction', (req, res)=> {
     p2pServer.broadcastTransaction(transaction)
     res.redirect('/transactions')
 })
-
+//os mineradores irão pegar as transações no pool de mineração no pool de transações
+//rewards quando eles conseguem criar um bloco
 app.get('/public-key', (req,res)=>{
     res.json({
         publicKey : wallet.publicKey
