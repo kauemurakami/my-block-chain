@@ -21,7 +21,6 @@ describe('TransactionPool ',()=> {
     const newTransaction = transaction.update(wallet, 'n3xt-r3c1p13nt', 50)
     transactionPool.updateOrAddTransaction(newTransaction)
     expect(JSON.stringify(transactionPool.transactions.find(t => t.id === newTransaction ))).not.toEqual(oldTransaction)
-
   })
 
 })
