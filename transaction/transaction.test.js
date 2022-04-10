@@ -1,4 +1,4 @@
-const Transaction  = require('./index.js')
+const Transaction  = require('./')
 const Wallet = require('../wallet')
 
 //verifica se o saldo do remetente teve a quantia subtraida antes e depois da transação
