@@ -19,4 +19,6 @@ class Miner{
     const validTransactions = this.transactionPool.validTransactions()
   }
 
-}module.exports = Miner
+}
+
+module.exports = Miner
