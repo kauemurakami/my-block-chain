@@ -5,9 +5,16 @@ const Blockchain = require('../blockchain')
 const HTTP_PORT = process.env.HTTP_PORT || 3001
 // $ HTTP_PORT = 3002 npm run dev
 const P2PServer = require('./p2p-server')
+//pool de transações 
+const TransactionPool = require('../transaction_pool')
+//wallet
+const Wallet = require('../wallet')
 
 const app = express()
-
+//transactions pool
+const tp = new TransactionPool()
+//wallet 
+const wallet = new Wallet()
 //bc
 const blockchain = new Blockchain()
 const p2pServer = new P2PServer(blockchain)
@@ -24,6 +31,16 @@ app.post('/mine', (req, res)=>{
 app.get('/blocks', (req, res)=> {
     res.json(blockchain.chain)
 },)
+
+app.get('/transactions', (req, res)=> {
+    res.json(tp.transactions)
+})
+
+app.post('/transaction', (req, res)=> {
+    const {recipient, amount} = req.body
+    const transaction = wallet.createTransaction(recipient, amount, tp)
+    res.redirect('/transactions')
+})
 
 app.listen(HTTP_PORT, ()=> console.log(`api started on port ${HTTP_PORT}`))
 p2pServer.listen()
