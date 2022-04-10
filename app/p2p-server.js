@@ -6,11 +6,16 @@ const P2P_PORT = process.env.P2P_PORT || 5001
 
 //caso exista conexoes abertas vamos separa por , ou retornar um array vazio
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
+const MESSAGE_TYPES = {
+  chain: 'CHAIN',
+  transaction: 'TRANSACTION'
+}
 
 class P2PServer{
-    constructor(blockchain){
+    constructor(blockchain, transactionPool){
         this.blockchain = blockchain,
-        this.socket = [] // lista dos servidores websockets
+        this.transactionPool,
+        this.socket = [] // lista dos servidores websockets/miners
     }
 
     listen(){
@@ -38,17 +43,42 @@ class P2PServer{
 
     messageHandler(socket){
         socket.on('message', message => {
+
             const data = JSON.parse(message)
-            this.blockchain.replaceChain(data)
+
+            switch(data.type){
+              
+              case MESSAGE_TYPES.chain:
+                this.blockchain.replaceChain(data, chain)
+                break
+
+              case MESSAGE_TYPES.transaction:
+                this.transactionPool.updateOrAddTransaction(data.transaction)
+                break
+            }
         })
     }
 
     syncChain(){
-        this.socket.forEach( socket => this.sendChain(socket))
+      this.socket.forEach( socket => this.sendChain(socket))
     }
-    sendChain(socket){
-        socket.send(JSON.stringify(this.blockchain.chain))
 
+    sendChain(socket){
+      socket.send(JSON.stringify({
+        type: MESSAGE_TYPES.chain,
+        chain: this.blockchain.chain
+      }))
+    }
+
+    sendTransaction(socket, transaction){
+      socket.send(JSON.stringify({
+        type: MESSAGE_TYPES.transaction,
+        transaction
+      }))
+    }
+
+    broadcastTransaction(transaction){
+      this.socket.forEach(socket => this.sendTransaction(socket, transaction))
     }
 }
 

@@ -17,7 +17,7 @@ const tp = new TransactionPool()
 const wallet = new Wallet()
 //bc
 const blockchain = new Blockchain()
-const p2pServer = new P2PServer(blockchain)
+const p2pServer = new P2PServer(blockchain, tp)
 
 app.use(express.json())
 
@@ -39,8 +39,14 @@ app.get('/transactions', (req, res)=> {
 app.post('/transaction', (req, res)=> {
     const {recipient, amount} = req.body
     const transaction = wallet.createTransaction(recipient, amount, tp)
+    p2pServer.broadcastTransaction(transaction)
     res.redirect('/transactions')
 })
 
+app.get('/public-key', (req,res)=>{
+    res.json({
+        publicKey : wallet.publicKey
+    })
+})
 app.listen(HTTP_PORT, ()=> console.log(`api started on port ${HTTP_PORT}`))
 p2pServer.listen()
