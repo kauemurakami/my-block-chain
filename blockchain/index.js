@@ -14,24 +14,20 @@ class Blockchain{
         this.chain.push(block)
         return block
     }
-    isValidChain(chain) {
-        if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis())) return false
-        console.log('!= block genesis ok')
-
-        for (let i = 1; i < chain.length; i++) {
-          const block = chain[i];
-          const lastBlock = chain[i-1];
-          if (
-            block.lastHash !== lastBlock.hash ||
-            block.hash !== Block.blockHash(block)
-          ) {
-            console.log('equals a previous block')
-            return false
-          }
+    
+    isValidChain() {
+      if (JSON.stringify(this.chain[0]) !== JSON.stringify(Block.genesis())) return false;
+   
+      for (let i = 1; i < this.chain.length; i++) {
+        const block = this.chain[i];
+        const lastBlock = this.chain[i-1];
+   
+        if (block.lastHash !== lastBlock.hash || block.hash !== Block.blockHash(block)) {
+          return false;
         }
-        console.log('block valid')
-        return true
       }
+      return true;
+    }
 
     replaceChain(newChain){
         if(newChain.length <= this.chain.length ){
